@@ -1,5 +1,6 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import axios from "axios";
+import Product from "../components/Product"
 
 const HomePage = () => {
 
@@ -12,13 +13,43 @@ const HomePage = () => {
             const response = await axios.get("https://backend-product-tool.onrender.com/api/products");
             console.log(response.data);
             setProducts(response.data)
+            setIsLoading(false)
         } catch (error) {
             console.log(error);
         }
     }
 
+    useEffect(() => {
+        getProducts();
+    }, [])
+
     return (
-        <div>The home page</div>
+        <div>
+            <div className="mt-5">
+                {isLoading ? (
+                    "Loading"
+                ) : (
+                    <>
+                    {products.length > 0 ? (
+                        <>
+                            {
+                                products.map((product, index) => {
+                                    return (
+                                        <Product keys={index} product={product}/>
+                                    )
+                                })
+                            }
+                        </>
+                    ) : (
+                        <div>
+                            There is no product
+                        </div>
+                        
+                    )}
+                    </>
+                )}
+            </div>
+        </div>
     )
 
 }

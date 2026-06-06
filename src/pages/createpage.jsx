@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import toast from 'react-hot-toast';
 
 const CreatePage = () => {
     const navigate = useNavigate();
@@ -16,9 +17,11 @@ const CreatePage = () => {
         try {
             setIsLoading(true);
             await axios.post("https://backend-product-tool.onrender.com/api/products", product);
+            toast.success('Product created!');
             navigate("/");
         } catch (error) {
             console.log(error);
+            toast.error('Something went wrong.');
         } finally {
             setIsLoading(false);
         }
@@ -41,9 +44,21 @@ const CreatePage = () => {
                         <label className="text-sm text-gray-500 mb-1 block">Price</label>
                         <input type="number" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.price} onChange={(e) => setProduct({...product, price: e.target.value})} />
                     </div>
+
+
+
                     <div>
-                        <label className="text-sm text-gray-500 mb-1 block">Image URL</label>
-                        <input type="text" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.image} onChange={(e) => setProduct({...product, image: e.target.value})} />
+                         <label className="text-sm text-gray-500 mb-1 block">Image URL</label>
+                         <input type="text" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.image} onChange={(e) => setProduct({...product, image: e.target.value})} />
+                         {product.image && (
+                            <img 
+                                key={product.image}
+                                src={product.image} 
+                                alt="preview" 
+                                className="mt-2 w-full h-40 object-cover rounded-md border border-gray-200" 
+                                onError={(e) => e.target.style.display = 'none'} 
+                              />
+                         )}
                     </div>
                         <button onClick={handleSubmit} disabled={isLoading} className="w-full bg-gray-800 text-white text-sm font-medium py-2 rounded-md hover:bg-gray-700 mt-2 flex items-center justify-center gap-2">
                             {isLoading ? (

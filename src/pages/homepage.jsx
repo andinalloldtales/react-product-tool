@@ -6,6 +6,7 @@ const HomePage = () => {
 
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [search, setSearch] = useState("");
 
     const handleDelete = (id) => {
         setProducts(products.filter(p => p._id !== id));
@@ -29,6 +30,16 @@ const HomePage = () => {
 
     return (
         <div>
+            <div className="mt-5 mb-4">
+                 <input 
+                    type="text" 
+                    placeholder="Search products..." 
+                    className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                 />
+            </div>
+
             {isLoading ? (
                 <div className="flex justify-center mt-20">
                     <svg className="animate-spin h-8 w-8 text-gray-700" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -39,12 +50,14 @@ const HomePage = () => {
             ) : (
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
                     {products.length > 0 ? (
-                        products.map((product, index) => (
+                        products
+                             .filter(p => p.name.toLowerCase().includes(search.toLowerCase()))
+                             .map((product, index) => (
                             <Product key={index} product={product} onDelete={handleDelete} />
-                        ))
-                    ) : (
-                        <div>There is no product</div>
-                    )}
+                         ))
+                      ) : (
+                 <div>There is no product</div>
+                )}
                 </div>
             )}
         </div>

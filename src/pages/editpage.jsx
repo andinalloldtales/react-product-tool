@@ -17,10 +17,11 @@ const EditPage = () => {
         const getProduct = async () => {
             try {
                 const response = await axios.get(`https://backend-product-tool.onrender.com/api/products/${id}`);
+               
                 console.log(response.data)
                 setProduct(response.data);
             } catch (error) {
-               // console.log("fetching id:", id)
+              console.log(error);
             }
         }
         getProduct();
@@ -30,11 +31,15 @@ const EditPage = () => {
         try {
             setIsLoading(true);
             await axios.put(`https://backend-product-tool.onrender.com/api/products/${id}`, product);
+            
             navigate("/");
         } catch (error) {
             console.log(error);
+            toast.error('Something went wrong.');
         } finally {
             setIsLoading(false);
+             toast.success('Product updated!');
+             
         }
     }
 
@@ -56,8 +61,17 @@ const EditPage = () => {
                         <input type="number" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.price} onChange={(e) => setProduct({...product, price: e.target.value})} />
                     </div>
                     <div>
-                        <label className="text-sm text-gray-500 mb-1 block">Image URL</label>
-                        <input type="text" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.image} onChange={(e) => setProduct({...product, image: e.target.value})} />
+                         <label className="text-sm text-gray-500 mb-1 block">Image URL</label>
+                         <input type="text" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.image} onChange={(e) => setProduct({...product, image: e.target.value})} />
+                         {product.image && (
+                            <img 
+                                key={product.image}
+                                src={product.image} 
+                                alt="preview" 
+                                className="mt-2 w-full h-40 object-cover rounded-md border border-gray-200" 
+                                onError={(e) => e.target.style.display = 'none'} 
+                              />
+                         )}
                     </div>
                     <button onClick={handleSubmit} className="w-full bg-gray-800 text-white text-sm font-medium py-2 rounded-md hover:bg-gray-700 mt-2">
                         {isLoading ? "Saving..." : "Update product"}

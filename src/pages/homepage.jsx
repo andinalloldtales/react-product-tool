@@ -7,6 +7,10 @@ const HomePage = () => {
     const [products, setProducts] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
 
+    const handleDelete = (id) => {
+        setProducts(products.filter(p => p._id !== id));
+    }
+
     const getProducts = async () => {
         try {
             setIsLoading(true)
@@ -36,7 +40,7 @@ const HomePage = () => {
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
                     {products.length > 0 ? (
                         products.map((product, index) => (
-                            <Product key={index} product={product} />
+                            <Product key={index} product={product} onDelete={handleDelete} />
                         ))
                     ) : (
                         <div>There is no product</div>

@@ -25,7 +25,7 @@ const HomePage = () => {
 
     return (
         <div>
-            <div className="mt-5">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-5">
                 {isLoading ? (
                     "Loading"
                 ) : (

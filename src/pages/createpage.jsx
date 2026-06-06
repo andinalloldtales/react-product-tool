@@ -45,9 +45,17 @@ const CreatePage = () => {
                         <label className="text-sm text-gray-500 mb-1 block">Image URL</label>
                         <input type="text" className="w-full border border-gray-200 rounded-md px-3 py-2 text-sm" value={product.image} onChange={(e) => setProduct({...product, image: e.target.value})} />
                     </div>
-                    <button onClick={handleSubmit} className="w-full bg-gray-800 text-white text-sm font-medium py-2 rounded-md hover:bg-gray-700 mt-2">
-                        {isLoading ? "Saving..." : "Save product"}
-                    </button>
+                        <button onClick={handleSubmit} disabled={isLoading} className="w-full bg-gray-800 text-white text-sm font-medium py-2 rounded-md hover:bg-gray-700 mt-2 flex items-center justify-center gap-2">
+                            {isLoading ? (
+                                <>
+                                    <svg className="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+                                    </svg>
+                                    Saving...
+                                </>
+                            ) : "Save product"}
+                        </button>
                 </div>
             </div>
         </div>
